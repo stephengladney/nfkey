@@ -18,23 +18,19 @@ function App() {
       getLink(host, String(pathname).substring(1))
         .then((response) => response.json())
         .then((link) => {
-          if (!link.url) setIsValidLink(false)
-          else {
-            setLink(link)
-            setIsValidLink(true)
-          }
+          if (link.url) setLink(link)
         })
         .catch((e) => alert(e))
     }
   }, [])
 
   useEffect(() => {
-    if (isValidLink) iframeRef.current.src = link.url
-  }, [isValidLink])
+    if (link) iframeRef.current.src = link.url
+  }, [link])
 
   return (
     <div className="App">
-      {isValidLink && (
+      {link && (
         <iframe
           style={{
             height: "100vh",
@@ -45,7 +41,7 @@ function App() {
           title="link"
         ></iframe>
       )}
-      {isPath && !isValidLink && (
+      {isPath && !link && (
         <h1 ref={advertiseH1}>
           {host}/{pathname} could be yours!
         </h1>
