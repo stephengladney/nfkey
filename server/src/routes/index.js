@@ -4,7 +4,7 @@ const path = require("path")
 const links = [
   {
     id: 1,
-    host: "nfkey.to",
+    host: "localhost:3000",
     path: "gladney",
     requirement_quantity: null,
     requirement_smart_contract: "x001",
@@ -31,8 +31,11 @@ router.get("/:path", (req, res) => {
 })
 
 router.get("/api/link", (req, res) => {
-  res.set("Access-Control-Allow-Origin", "*")
-  res.status(200).send(getLink(req.query.host, req.query.path))
+  res.set({
+    "Access-Control-Allow-Origin": "*",
+    "Content-Type": "application/json",
+  })
+  res.status(200).send(getLink(req.query.host, req.query.path) || {})
 })
 
 router.get("/", (req, res) => {
