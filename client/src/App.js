@@ -8,9 +8,9 @@ function getLink(host, path) {
 function App() {
   const { host, pathname } = window.document.location
   const isPath = pathname !== "/"
+  const [link, setLink] = useState()
   const iframeRef = useRef()
   const advertiseH1 = useRef()
-  const [link, setLink] = useState()
 
   useEffect(() => {
     if (isPath) {
