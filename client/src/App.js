@@ -10,7 +10,6 @@ function App() {
   const isPath = pathname !== "/"
   const iframeRef = useRef()
   const advertiseH1 = useRef()
-  const [isValidLink, setIsValidLink] = useState()
   const [link, setLink] = useState()
 
   useEffect(() => {
