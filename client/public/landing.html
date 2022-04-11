@@ -1,0 +1,87 @@
+<html>
+  <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        background-color: #070712;
+        text-align: center;
+      }
+
+      h1 {
+        display: inline;
+        font-family: "Archivo Black";
+        font-size: 4em;
+      }
+      #container {
+        width: 100%;
+      }
+      #host {
+        color: #0ef;
+      }
+      #topic {
+        color: #eee;
+      }
+      @media screen and (max-width: 768px) {
+        h1 {
+          display: block;
+        }
+      }
+      @media screen and (min-width: 769px) and (max-width: 1024px) {
+        #container {
+          margin: 0;
+          position: absolute;
+          top: 35%;
+        }
+        h1 {
+          display: block;
+        }
+      }
+      @media screen and (min-width: 1025px) {
+        #container {
+          left: 35%;
+          margin: 0;
+          position: absolute;
+          text-align: left;
+          top: 35%;
+        }
+        h1 {
+          display: inline;
+        }
+        #host {
+          /* position: absolute; */
+        }
+        #topic {
+          /* position: absolute; */
+          /* margin-left: 7px; */
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container">
+      <h1 id="host">nfkey.to/</h1>
+      <h1 id="topic"></h1>
+    </div>
+  </body>
+  <script>
+    const words = [
+      "announcements",
+      "content",
+      "events",
+      "music",
+      "news",
+      "earlyaccess",
+    ]
+    let wordIndex = 0
+    setInterval(() => {
+      if (wordIndex === words.length - 1) wordIndex = 0
+      else wordIndex++
+      document.querySelector("#topic").innerHTML = words[wordIndex]
+    }, 1000)
+  </script>
+</html>
