@@ -15,32 +15,41 @@
       h1 {
         display: inline;
         font-family: "Archivo Black";
-        font-size: 4em;
+        font-size: 64px;
+        font-weight: 400;
       }
-      #container {
-        width: 100%;
-      }
+
       #host {
         color: #0ef;
       }
+
       #topic {
         color: #eee;
       }
+
       @media screen and (max-width: 768px) {
+        #container {
+          width: 100%;
+        }
+
         h1 {
           display: block;
         }
       }
+
       @media screen and (min-width: 769px) and (max-width: 1024px) {
         #container {
           margin: 0;
           position: absolute;
           top: 35%;
+          width: 100%;
         }
+
         h1 {
           display: block;
         }
       }
+
       @media screen and (min-width: 1025px) {
         #container {
           left: 35%;
@@ -49,15 +58,13 @@
           text-align: left;
           top: 35%;
         }
+
         h1 {
           display: inline;
         }
+
         #host {
           /* position: absolute; */
-        }
-        #topic {
-          /* position: absolute; */
-          /* margin-left: 7px; */
         }
       }
     </style>
@@ -65,17 +72,21 @@
   <body>
     <div id="container">
       <h1 id="host">nfkey.to/</h1>
-      <h1 id="topic"></h1>
+      <h1 id="topic">content</h1>
     </div>
   </body>
   <script>
     const words = [
-      "announcements",
       "content",
-      "events",
+      "announcements",
       "music",
+      "parties",
+      "concerts",
+      "membersonly",
+      "exclusives",
       "news",
       "earlyaccess",
+      "vip",
     ]
     let wordIndex = 0
     setInterval(() => {

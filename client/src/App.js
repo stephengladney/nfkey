@@ -1,15 +1,13 @@
 import "./App.css"
 import { useEffect, useRef, useState } from "react"
-
-function getLink(host, path) {
-  return fetch(`http://localhost:5000/api/link?host=${host}&path=${path}`)
-}
+import { generateIframe } from "./lib/iframe"
+import { getLink } from "./lib/api"
 
 function App() {
   const { host, pathname } = window.document.location
   const isPath = pathname !== "/"
   const [link, setLink] = useState()
-  const iframeRef = useRef()
+  const [isLoading, setIsLoading] = useState(isPath ? true : false)
   const advertiseH1 = useRef()
 
   useEffect(() => {
@@ -18,35 +16,32 @@ function App() {
         .then((response) => response.json())
         .then((link) => {
           if (link.url) setLink(link)
+          setIsLoading(false)
         })
         .catch((e) => alert(e))
     }
   }, [])
 
   useEffect(() => {
-    if (link) iframeRef.current.src = link.url
+    if (link) generateIframe(link.url)
   }, [link])
 
-  return (
+  return link ? (
     <div className="App">
-      {link && (
-        <iframe
-          style={{
-            height: "100vh",
-            width: "100%",
-            border: 0,
-          }}
-          ref={iframeRef}
-          title="link"
-        ></iframe>
-      )}
-      {isPath && !link && (
-        <h1 ref={advertiseH1}>
-          {host}/{pathname} could be yours!
-        </h1>
-      )}
-      <h1>Homepage</h1>
+      <div id="container"></div>
     </div>
+  ) : (
+    !isLoading && (
+      <div className="App">
+        {isPath && (
+          <h1 ref={advertiseH1}>
+            {host}
+            {pathname} could be yours!
+          </h1>
+        )}
+        {<h1>Homepage</h1>}
+      </div>
+    )
   )
 }
 
