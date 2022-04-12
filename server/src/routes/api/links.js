@@ -1,28 +1,9 @@
 const router = require("express").Router()
+const { response } = require("express")
+const { Link } = require("../../models")
 
-const links = [
-  {
-    id: 1,
-    host: "localhost:3000",
-    path: "gladney",
-    requirement_quantity: null,
-    requirement_smart_contract: "x001",
-    requirement_token_id: "761",
-    url: "https://vistaprint.com",
-  },
-  {
-    id: 1,
-    host: "localhost:3000",
-    path: "barber",
-    requirement_quantity: 2,
-    requirement_smart_contract: "x001",
-    requirement_token_id: null,
-    url: "https://google.com",
-  },
-]
-
-function getLink(host, path) {
-  return links.find((link) => link.host === host && link.path === path)
+function getLink(host, pathname) {
+  return Link.findOne({ where: { host, pathname } })
 }
 
 router.get("", (req, res) => {
@@ -30,7 +11,9 @@ router.get("", (req, res) => {
     "Access-Control-Allow-Origin": "*",
     "Content-Type": "application/json",
   })
-  res.status(200).send(getLink(req.query.host, req.query.path) || {})
+  getLink(req.query.host, req.query.path).then((link) =>
+    res.status(200).send(link || {})
+  )
 })
 
 module.exports = router
