@@ -13,7 +13,10 @@ export function generateIframe(url) {
   elIframe["setAttribute"]("id", idOne)
   document.getElementById("container").appendChild(elIframe)
 
-  document["getElementById"](idOne)["contentWindow"]["document"].write(
+  const iframe = document.getElementById(idOne)
+
+  // window.addEventListener("message", (e) => console.log(e.data))
+  iframe.contentWindow.document.write(
     '<script type="text/javascript">location.href = "' + url + '";\x3c/script>'
   )
 }

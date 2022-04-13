@@ -2,47 +2,65 @@ import "./App.css"
 import { useEffect, useRef, useState } from "react"
 import { generateIframe } from "./lib/iframe"
 import { getLink } from "./lib/api"
+import { Verify } from "./views/Verify"
+import { getEthAccounts } from "./lib/metamask"
+import { Homepage } from "./views/Homepage"
 
 function App() {
   const { host, pathname } = window.document.location
   const isPath = pathname !== "/"
   const [link, setLink] = useState()
   const [isLoading, setIsLoading] = useState(isPath ? true : false)
-  const advertiseH1 = useRef()
+  const [isVerifying, setIsVerifying] = useState(false)
+  const [isVerified, setIsVerified] = useState(false)
 
   useEffect(() => {
     if (isPath) {
       getLink(host, String(pathname).substring(1))
         .then((response) => response.json())
         .then((link) => {
-          if (link.url) setLink(link)
+          console.log(link)
+          if (link.url) {
+            setLink(link)
+            setIsVerifying(true)
+          }
           setIsLoading(false)
         })
-        .catch((e) => alert(e))
+        .catch((e) => alert(`error getting link: ${e}`))
     }
   }, [])
 
-  useEffect(() => {
-    if (link) generateIframe(link.url)
-  }, [link])
+  // useEffect(() => {
 
-  return link ? (
-    <div className="App">
-      <div id="container"></div>
-    </div>
-  ) : (
-    !isLoading && (
+  //   if (isVerifying && !isVerified) {
+  //     getEthAccounts().then((accounts) => {
+  //       console.log(accounts)
+  //       fetch(
+  //         `http://localhost:5000/api/verify?link_id=${link.id}&wallet_address=${accounts[0]}`
+  //       )
+  //         .then((response) => response.json())
+  //         .then((verdict) => setIsVerified(!!verdict.allow))
+  //     })
+  //   } else if (isVerified) {
+  //     setIsVerifying(false)
+  //     setTimeout(() => generateIframe(link.url), 2000)
+  //   }
+  // }, [isVerifying, isVerified])
+
+  if (link) {
+    return (
       <div className="App">
-        {isPath && (
-          <h1 ref={advertiseH1}>
-            {host}
-            {pathname} could be yours!
-          </h1>
-        )}
-        {<h1>Homepage</h1>}
+        {isVerifying ? <Verify /> : <div id="container"></div>}
       </div>
     )
-  )
+  } else
+    return (
+      !isLoading && (
+        <div className="App">
+          {<Homepage host={host} pathname={isPath ? pathname : null} />}
+        </div>
+      )
+    )
 }
 
 export default App
