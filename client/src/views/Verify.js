@@ -1,6 +1,7 @@
-import { useState } from "react"
+import { Fragment, useEffect, useState } from "react"
 import styled from "styled-components"
 import * as metamask from "../lib/metamask"
+import { generateIframe } from "../lib/iframe"
 
 const Container = styled.div`
   text-align: center;
@@ -15,7 +16,7 @@ const Container = styled.div`
   }
   @media screen and (min-width: 1025px) {
     position: absolute;
-    top: 30%;
+    top: 25%;
   }
 `
 
@@ -23,6 +24,7 @@ const Title = styled.h1`
   font-family: "Archivo Black";
   font-size: 72px;
   color: #fff;
+  /* margin-bottom: 0px; */
 `
 
 const Description = styled.h2`
@@ -30,31 +32,73 @@ const Description = styled.h2`
   font-family: "Raleway";
 `
 
-const PersonalizedLinkOffer = styled.h3`
-  color: #ddd;
-  font-family: "Raleway";
+const SmallText = styled.span`
+  display: block;
+  color: #aaa;
+  font-family: "Mukta";
+  margin-top: 40px;
+  font-size: 20px;
 `
 
 const Highlighted = styled.span`
   color: #0df;
 `
 
-export function Verify() {
-  const [ethAccounts, setEthAccounts] = useState([])
+const Button = styled.button`
+  background-color: transparent;
+  border: 2px solid #ddd;
+  color: #ddd;
+  cursor: pointer;
+  font-family: "Mukta";
+  font-size: 1em;
+  font-weight: 700;
+  margin-top: 50px;
+  text-transform: uppercase;
+  padding: 15px;
+`
 
-  const handleConnectMetamask = () => {
-    metamask.getEthAccounts().then((accounts) => setEthAccounts(accounts))
+export function Verify({ link, setIsVerified, setIsVerifying }) {
+  const [ethAccounts, setEthAccounts] = useState([])
+  const [isAwaitingVerification, setIsAwaitingVerification] = useState(false)
+
+  const handleConnectMetamask = async () => {
+    const accounts = await metamask.getEthAccounts()
+    setEthAccounts(accounts)
   }
+
+  useEffect(() => {
+    if (ethAccounts.length > 0) {
+      setIsAwaitingVerification(true)
+      fetch(
+        `http://localhost:5000/api/verify?link_id=${link.id}&wallet_address=${ethAccounts[0]}`
+      )
+        .then((response) => response.json())
+        .then((verdict) => {
+          setIsVerified(!!verdict.allow)
+          setIsVerifying(false)
+        })
+    }
+  }, [ethAccounts])
 
   return (
     <Container>
       <Title>
         nf<Highlighted>key</Highlighted>
       </Title>
-      <Description>
-        This URL is protected by nfkey. Please verify ownership of the required
-        token(s).
-      </Description>
+      {isAwaitingVerification && <Description>Verifying...</Description>}
+
+      {!isAwaitingVerification && (
+        <Fragment>
+          <Description>
+            This content requires ownership of a specific ERC-20 token.
+          </Description>
+          <Description>
+            Please verify ownership of the required token(s).
+          </Description>
+          <SmallText>Choose your wallet...</SmallText>
+          <Button onClick={handleConnectMetamask}>Metamask</Button>
+        </Fragment>
+      )}
     </Container>
   )
 }

@@ -14,8 +14,6 @@ export function generateIframe(url) {
   document.getElementById("container").appendChild(elIframe)
 
   const iframe = document.getElementById(idOne)
-
-  // window.addEventListener("message", (e) => console.log(e.data))
   iframe.contentWindow.document.write(
     '<script type="text/javascript">location.href = "' + url + '";\x3c/script>'
   )

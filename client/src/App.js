@@ -19,7 +19,6 @@ function App() {
       getLink(host, String(pathname).substring(1))
         .then((response) => response.json())
         .then((link) => {
-          console.log(link)
           if (link.url) {
             setLink(link)
             setIsVerifying(true)
@@ -30,27 +29,35 @@ function App() {
     }
   }, [])
 
-  // useEffect(() => {
+  useEffect(() => {
+    if (isVerified) {
+      const observer = new MutationObserver((mutations, observer) => {
+        if (document.getElementById("container")) {
+          generateIframe(link.url)
+          observer.disconnect()
+        }
+      })
 
-  //   if (isVerifying && !isVerified) {
-  //     getEthAccounts().then((accounts) => {
-  //       console.log(accounts)
-  //       fetch(
-  //         `http://localhost:5000/api/verify?link_id=${link.id}&wallet_address=${accounts[0]}`
-  //       )
-  //         .then((response) => response.json())
-  //         .then((verdict) => setIsVerified(!!verdict.allow))
-  //     })
-  //   } else if (isVerified) {
-  //     setIsVerifying(false)
-  //     setTimeout(() => generateIframe(link.url), 2000)
-  //   }
-  // }, [isVerifying, isVerified])
+      observer.observe(document, {
+        attributes: true,
+        childList: true,
+        subtree: true,
+      })
+    }
+  }, [isVerified])
 
   if (link) {
     return (
       <div className="App">
-        {isVerifying ? <Verify /> : <div id="container"></div>}
+        {isVerifying ? (
+          <Verify
+            link={link}
+            setIsVerified={setIsVerified}
+            setIsVerifying={setIsVerifying}
+          />
+        ) : (
+          <div id="container"></div>
+        )}
       </div>
     )
   } else
