@@ -1,5 +1,4 @@
 import styled from "styled-components"
-import * as views from "./"
 
 const Container = styled.div`
   display: flex;
@@ -78,33 +77,12 @@ const BodyText = styled.span`
   font-size: 18px;
 `
 
-export function Homepage({ host, pathname, setView }) {
+export function NewLinkForm({}) {
   return (
     <Container>
       <Title>
         NF<Highlighted>Key</Highlighted>
       </Title>
-      <Description>
-        Create Ethereum token based access for your content.
-      </Description>
-
-      <BodyContainer>
-        <BodyText>
-          No code or cost required. Simply enter your destination URL and the
-          smart contract address of the token required for access.
-        </BodyText>
-      </BodyContainer>
-      {pathname && (
-        <PersonalizedLinkOffer>
-          Want{" "}
-          <Highlighted>
-            {host}
-            {pathname}
-          </Highlighted>
-          ? Click here.
-        </PersonalizedLinkOffer>
-      )}
-      <button onClick={() => setView(views.NEWLINK)}>Create new link</button>
     </Container>
   )
 }

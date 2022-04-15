@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useState } from "react"
 import styled from "styled-components"
 import * as metamask from "../lib/metamask"
-import { generateIframe } from "../lib/iframe"
+import * as views from "./"
 
 const Container = styled.div`
   text-align: center;
@@ -57,7 +57,7 @@ const Button = styled.button`
   padding: 15px;
 `
 
-export function Verify({ link, setIsVerified, setIsVerifying }) {
+export function Verify({ link, setView }) {
   const [ethAccounts, setEthAccounts] = useState([])
   const [isAwaitingVerification, setIsAwaitingVerification] = useState(false)
 
@@ -74,8 +74,7 @@ export function Verify({ link, setIsVerified, setIsVerifying }) {
       )
         .then((response) => response.json())
         .then((verdict) => {
-          setIsVerified(!!verdict.allow)
-          setIsVerifying(false)
+          setView(verdict.allow ? views.VERIFIED : views.HOMEPAGE)
         })
     }
   }, [ethAccounts])
@@ -83,7 +82,7 @@ export function Verify({ link, setIsVerified, setIsVerifying }) {
   return (
     <Container>
       <Title>
-        nf<Highlighted>key</Highlighted>
+        NF<Highlighted>Key</Highlighted>
       </Title>
       {isAwaitingVerification && <Description>Verifying...</Description>}
 

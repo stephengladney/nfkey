@@ -1,0 +1,5 @@
+export const LOADING = "loading"
+export const VERIFYING = "verifying"
+export const VERIFIED = "verified"
+export const NEWLINK = "newlink"
+export const HOMEPAGE = "homepage"

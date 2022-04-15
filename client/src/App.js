@@ -1,18 +1,16 @@
 import "./App.css"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import { generateIframe } from "./lib/iframe"
 import { getLink } from "./lib/api"
 import { Verify } from "./views/Verify"
-import { getEthAccounts } from "./lib/metamask"
 import { Homepage } from "./views/Homepage"
+import * as views from "./views/"
 
 function App() {
   const { host, pathname } = window.document.location
   const isPath = pathname !== "/"
   const [link, setLink] = useState()
-  const [isLoading, setIsLoading] = useState(isPath ? true : false)
-  const [isVerifying, setIsVerifying] = useState(false)
-  const [isVerified, setIsVerified] = useState(false)
+  const [view, setView] = useState(isPath ? views.LOADING : views.HOMEPAGE)
 
   useEffect(() => {
     if (isPath) {
@@ -21,17 +19,18 @@ function App() {
         .then((link) => {
           if (link.url) {
             setLink(link)
-            setIsVerifying(true)
+            setView(views.VERIFYING)
+          } else {
+            setView(views.HOMEPAGE)
           }
-          setIsLoading(false)
         })
         .catch((e) => alert(`error getting link: ${e}`))
     }
   }, [])
 
   useEffect(() => {
-    if (isVerified) {
-      const observer = new MutationObserver((mutations, observer) => {
+    if (view === views.VERIFIED) {
+      const observer = new MutationObserver((_, observer) => {
         if (document.getElementById("container")) {
           generateIframe(link.url)
           observer.disconnect()
@@ -44,30 +43,26 @@ function App() {
         subtree: true,
       })
     }
-  }, [isVerified])
+  }, [view])
 
-  if (link) {
-    return (
-      <div className="App">
-        {isVerifying ? (
-          <Verify
-            link={link}
-            setIsVerified={setIsVerified}
-            setIsVerifying={setIsVerifying}
-          />
-        ) : (
-          <div id="container"></div>
-        )}
-      </div>
-    )
-  } else
-    return (
-      !isLoading && (
+  return (
+    <div className="App">
+      {view === views.VERIFYING && <Verify link={link} setView={setView} />}
+      {view === views.VERIFIED && <div id="container"></div>}
+      {view === views.NEWLINK && <span>New link!</span>}
+      {view === views.HOMEPAGE && (
         <div className="App">
-          {<Homepage host={host} pathname={isPath ? pathname : null} />}
+          {
+            <Homepage
+              host={host}
+              pathname={isPath ? pathname : null}
+              setView={setView}
+            />
+          }
         </div>
-      )
-    )
+      )}
+    </div>
+  )
 }
 
 export default App
