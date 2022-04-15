@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useState } from "react"
 import styled from "styled-components"
 import * as metamask from "../lib/metamask"
-import * as views from "./"
+import * as views from "./const"
 
 const Container = styled.div`
   text-align: center;
