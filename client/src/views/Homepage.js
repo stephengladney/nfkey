@@ -78,6 +78,36 @@ const BodyText = styled.span`
   font-size: 18px;
 `
 
+const StyledButton = styled.button`
+  background-color: transparent;
+  border: 1px solid #0cf;
+  color: #0cf;
+  cursor: pointer;
+  font-family: "Mukta";
+  font-size: 1em;
+  font-weight: 700;
+  padding: 7px;
+  text-transform: uppercase;
+
+  :hover {
+    background-color: #001026;
+  }
+
+  @media screen and (max-width: 768px) {
+    width: 80%;
+  }
+  @media screen and (min-width: 1025px) {
+    width: 215px;
+  }
+`
+
+const ButtonContainer = styled.div`
+  margin-top: 40px;
+  @media screen and (max-width: 768px) {
+    width: 100%;
+  }
+`
+
 export function Homepage({ host, pathname, setView }) {
   return (
     <Container>
@@ -94,7 +124,7 @@ export function Homepage({ host, pathname, setView }) {
           smart contract address of the token required for access.
         </BodyText>
       </BodyContainer>
-      {pathname && (
+      {/* {pathname && (
         <PersonalizedLinkOffer>
           Want{" "}
           <Highlighted>
@@ -103,8 +133,12 @@ export function Homepage({ host, pathname, setView }) {
           </Highlighted>
           ? Click here.
         </PersonalizedLinkOffer>
-      )}
-      <button onClick={() => setView(views.NEWLINK)}>Create new link</button>
+      )} */}
+      <ButtonContainer>
+        <StyledButton onClick={() => setView(views.NEWLINK)}>
+          Create new link
+        </StyledButton>
+      </ButtonContainer>
     </Container>
   )
 }
