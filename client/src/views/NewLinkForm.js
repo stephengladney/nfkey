@@ -21,8 +21,11 @@ import {
 } from "./NewLinkForm.styles"
 
 export function NewLinkForm({}) {
+  const { pathname } = window.document.location
   const [destinationUrl, setDestinationUrl] = useState("")
-  const [urlPath, setUrlPath] = useState(generateId(6))
+  const [urlPath, setUrlPath] = useState(
+    pathname ? String(pathname).substring(1) : generateId(6)
+  )
   const [isUrlPathTaken, setIsUrlPathTaken] = useState(false)
   const [smartContractAddress, setSmartContractAddress] = useState("")
   const typingTimer = useRef()
