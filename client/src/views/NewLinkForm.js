@@ -12,7 +12,7 @@ import {
   FormRightColumn,
   FormRow,
   Highlighted,
-  InputErrorText,
+  InputFeedbackText,
   NFKeyURL,
   StyledButton,
   StyledInput,
@@ -26,7 +26,7 @@ export function NewLinkForm({}) {
   const [urlPath, setUrlPath] = useState(
     pathname ? String(pathname).substring(1) : generateId(6)
   )
-  const [isUrlPathAvailable, setIsUrlPathAvailable] = useState(false)
+  const [isUrlPathAvailable, setIsUrlPathAvailable] = useState(true)
   const [smartContractAddress, setSmartContractAddress] = useState("")
   const typingTimer = useRef()
 
@@ -93,11 +93,11 @@ export function NewLinkForm({}) {
 
           <ErrorTextContainer>
             <FormRightColumn>
-              <InputErrorText isError={!isUrlPathAvailable}>
+              <InputFeedbackText isError={!isUrlPathAvailable}>
                 {isUrlPathAvailable
                   ? "This URL is available!"
                   : "Sorry, this URL is already taken."}
-              </InputErrorText>
+              </InputFeedbackText>
             </FormRightColumn>
           </ErrorTextContainer>
 

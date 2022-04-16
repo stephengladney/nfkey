@@ -67,7 +67,7 @@ export const StyledInput = styled.input`
   }
 `
 
-export const InputErrorText = styled.span`
+export const InputFeedbackText = styled.span`
   color: ${(p) => (p.isError ? "#d36" : "#3d6")};
   font-family: "Mukta";
   font-size: 14px;
