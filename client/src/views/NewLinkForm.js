@@ -26,7 +26,7 @@ export function NewLinkForm({}) {
   const [urlPath, setUrlPath] = useState(
     pathname ? String(pathname).substring(1) : generateId(6)
   )
-  const [isUrlPathTaken, setIsUrlPathTaken] = useState(false)
+  const [isUrlPathAvailable, setIsUrlPathAvailable] = useState(false)
   const [smartContractAddress, setSmartContractAddress] = useState("")
   const typingTimer = useRef()
 
@@ -54,9 +54,9 @@ export function NewLinkForm({}) {
         .then((link) => {
           console.log(urlPath)
           if (link.url) {
-            setIsUrlPathTaken(true)
+            setIsUrlPathAvailable(false)
           } else {
-            setIsUrlPathTaken(false)
+            setIsUrlPathAvailable(true)
           }
         })
         .catch((e) => alert(`error getting link: ${e}`))
@@ -83,7 +83,7 @@ export function NewLinkForm({}) {
             <FormRightColumn>
               <StyledInput
                 customWidth={"40%"}
-                isError={isUrlPathTaken}
+                isError={!isUrlPathAvailable}
                 onChange={handleUrlPathChange}
                 spellCheck={false}
                 value={urlPath}
@@ -91,15 +91,16 @@ export function NewLinkForm({}) {
             </FormRightColumn>
           </FormRow>
 
-          {isUrlPathTaken && (
-            <ErrorTextContainer>
-              <FormRightColumn>
-                <InputErrorText>
-                  Sorry, this URL is already taken.
-                </InputErrorText>
-              </FormRightColumn>
-            </ErrorTextContainer>
-          )}
+          <ErrorTextContainer>
+            <FormRightColumn>
+              <InputErrorText isError={!isUrlPathAvailable}>
+                {isUrlPathAvailable
+                  ? "This URL is available!"
+                  : "Sorry, this URL is already taken."}
+              </InputErrorText>
+            </FormRightColumn>
+          </ErrorTextContainer>
+
           <FormRow>
             <FormLeftColumn>
               <StyledLabel>Destination URL</StyledLabel>

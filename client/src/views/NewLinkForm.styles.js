@@ -68,7 +68,7 @@ export const StyledInput = styled.input`
 `
 
 export const InputErrorText = styled.span`
-  color: #d36;
+  color: ${(p) => (p.isError ? "#d36" : "#3d6")};
   font-family: "Mukta";
   font-size: 14px;
   justify-self: flex-start;
