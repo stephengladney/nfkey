@@ -24,6 +24,7 @@ const URL_IS_AVAILALABLE = "This URL is available!"
 const URL_IS_NOT_AVAILABLE = "Sorry, this URL is already taken."
 const URL_MINIMUM_3_CHARS = "URL path must be at least 3 characters."
 const URL_CHECKING_AVAILABILITY = "Checking availability..."
+const URL_BLANK = " "
 
 export function NewLinkForm({}) {
   const { pathname } = window.document.location
@@ -58,7 +59,7 @@ export function NewLinkForm({}) {
     clearTimeout(typingTimer.current)
     if (String(urlPath).length < 3)
       return setUrlPathFeedback(URL_MINIMUM_3_CHARS)
-    setUrlPathFeedback(" ")
+    setUrlPathFeedback(URL_BLANK)
     typingTimer.current = setTimeout(() => {
       setUrlPathFeedback(URL_CHECKING_AVAILABILITY)
       setTimeout(() => {
@@ -145,8 +146,12 @@ export function NewLinkForm({}) {
               Randomize URL
             </StyledButton>
             <StyledButton
+              disabled={
+                isError ||
+                urlPathFeedback === URL_BLANK ||
+                urlPathFeedback === URL_CHECKING_AVAILABILITY
+              }
               onClick={handleRandomizeClick}
-              // style={{ marginTop: "40px" }}
             >
               Create Shortlink
             </StyledButton>

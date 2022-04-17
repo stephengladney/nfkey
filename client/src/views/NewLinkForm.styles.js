@@ -166,9 +166,9 @@ export const ErrorTextContainer = styled.div`
 
 export const StyledButton = styled.button`
   background-color: transparent;
-  border: 1px solid #0cf;
-  color: #0cf;
-  cursor: pointer;
+  border: ${(p) => (p.disabled ? "1px solid #666" : "1px solid #0cf")};
+  color: ${(p) => (p.disabled ? "#666" : "#0cf")};
+  cursor: ${(p) => (p.disabled ? "not-allowed" : "pointer")};
   font-family: "Mukta";
   font-size: 1em;
   font-weight: 700;
