@@ -68,10 +68,11 @@ export const StyledInput = styled.input`
 `
 
 export const InputFeedbackText = styled.span`
-  color: ${(p) => (p.isError ? "#d36" : "#3d6")};
+  color: ${(p) => (p.isError ? "#d36" : p.isSuccess ? "#3d6" : "#aaa")};
   font-family: "Mukta";
   font-size: 14px;
   justify-self: flex-start;
+  white-space: pre;
 `
 
 export const StyledLabel = styled.label`

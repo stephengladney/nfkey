@@ -20,15 +20,23 @@ import {
   Title,
 } from "./NewLinkForm.styles"
 
+const URL_IS_AVAILALABLE = "This URL is available!"
+const URL_IS_NOT_AVAILABLE = "Sorry, this URL is already taken."
+const URL_MINIMUM_3_CHARS = "URL path must be at least 3 characters."
+const URL_CHECKING_AVAILABILITY = "Checking availability..."
+
 export function NewLinkForm({}) {
   const { pathname } = window.document.location
   const [destinationUrl, setDestinationUrl] = useState("")
   const [urlPath, setUrlPath] = useState(
-    pathname ? String(pathname).substring(1) : generateId(6)
+    pathname !== "/" ? String(pathname).substring(1) : generateId(6)
   )
-  const [isUrlPathAvailable, setIsUrlPathAvailable] = useState(true)
+  const [urlPathFeedback, setUrlPathFeedback] = useState("")
   const [smartContractAddress, setSmartContractAddress] = useState("")
   const typingTimer = useRef()
+  const isError =
+    urlPathFeedback === URL_IS_NOT_AVAILABLE ||
+    urlPathFeedback === URL_MINIMUM_3_CHARS
 
   const handleRandomizeClick = () => {
     setUrlPath(generateId(6))
@@ -48,18 +56,23 @@ export function NewLinkForm({}) {
 
   useEffect(() => {
     clearTimeout(typingTimer.current)
+    if (String(urlPath).length < 3)
+      return setUrlPathFeedback(URL_MINIMUM_3_CHARS)
+    setUrlPathFeedback(" ")
     typingTimer.current = setTimeout(() => {
-      getLink("localhost:3000", urlPath)
-        .then((response) => response.json())
-        .then((link) => {
-          console.log(urlPath)
-          if (link.url) {
-            setIsUrlPathAvailable(false)
-          } else {
-            setIsUrlPathAvailable(true)
-          }
-        })
-        .catch((e) => alert(`error getting link: ${e}`))
+      setUrlPathFeedback(URL_CHECKING_AVAILABILITY)
+      setTimeout(() => {
+        getLink("localhost:3000", urlPath)
+          .then((response) => response.json())
+          .then((link) => {
+            if (link.url) {
+              setUrlPathFeedback(URL_IS_NOT_AVAILABLE)
+            } else {
+              setUrlPathFeedback(URL_IS_AVAILALABLE)
+            }
+          })
+          .catch((e) => alert(`error getting link: ${e}`))
+      }, 1000)
     }, 1000)
   }, [urlPath])
 
@@ -83,7 +96,7 @@ export function NewLinkForm({}) {
             <FormRightColumn>
               <StyledInput
                 customWidth={"40%"}
-                isError={!isUrlPathAvailable}
+                isError={isError}
                 onChange={handleUrlPathChange}
                 spellCheck={false}
                 value={urlPath}
@@ -93,10 +106,11 @@ export function NewLinkForm({}) {
 
           <ErrorTextContainer>
             <FormRightColumn>
-              <InputFeedbackText isError={!isUrlPathAvailable}>
-                {isUrlPathAvailable
-                  ? "This URL is available!"
-                  : "Sorry, this URL is already taken."}
+              <InputFeedbackText
+                isError={isError}
+                isSuccess={urlPathFeedback === URL_IS_AVAILALABLE}
+              >
+                {urlPathFeedback}
               </InputFeedbackText>
             </FormRightColumn>
           </ErrorTextContainer>
