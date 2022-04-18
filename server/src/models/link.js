@@ -3,6 +3,13 @@ const db = require("../config/sequelize")
 const Link = db.sequelize.define(
   "links",
   {
+    id: {
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+      type: db.Sequelize.INTEGER,
+      unique: true,
+    },
     host: {
       type: db.Sequelize.STRING,
       unique: false,
@@ -21,14 +28,14 @@ const Link = db.sequelize.define(
     requirement_quantity: {
       type: db.Sequelize.INTEGER,
       unique: false,
-      allowNull: false,
+      allowNull: true,
     },
     requirement_token_id: {
       type: db.Sequelize.STRING,
       unique: false,
       allowNull: true,
     },
-    url: {
+    destination_url: {
       type: db.Sequelize.STRING,
       unique: false,
       allowNull: false,

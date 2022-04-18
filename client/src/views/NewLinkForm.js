@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 import { generateId } from "../lib/id"
-import { getLink } from "../lib/api"
+import { createLink, getLink } from "../lib/api"
 import {
   Container,
   BodyContainer,
@@ -26,7 +26,7 @@ const URL_MINIMUM_3_CHARS = "URL path must be at least 3 characters."
 const URL_CHECKING_AVAILABILITY = "Checking availability..."
 const URL_BLANK = " "
 
-export function NewLinkForm({}) {
+export function NewLinkForm() {
   const { pathname } = window.document.location
   const [destinationUrl, setDestinationUrl] = useState("")
   const [urlPath, setUrlPath] = useState(
@@ -41,6 +41,17 @@ export function NewLinkForm({}) {
 
   const handleRandomizeClick = () => {
     setUrlPath(generateId(6))
+  }
+
+  const handleCreateClick = () => {
+    createLink({
+      host: "nfkey.to",
+      pathname: urlPath,
+      requirement_smart_contract: smartContractAddress,
+      destination_url: destinationUrl,
+    })
+      .then((_) => alert("success"))
+      .catch((e) => alert(`failure: ${e}`))
   }
 
   const handleDestinationUrlChange = (e) => {
@@ -66,7 +77,7 @@ export function NewLinkForm({}) {
         getLink("localhost:3000", urlPath)
           .then((response) => response.json())
           .then((link) => {
-            if (link.url) {
+            if (link.destination_url) {
               setUrlPathFeedback(URL_IS_NOT_AVAILABLE)
             } else {
               setUrlPathFeedback(URL_IS_AVAILALABLE)
@@ -151,7 +162,7 @@ export function NewLinkForm({}) {
                 urlPathFeedback === URL_BLANK ||
                 urlPathFeedback === URL_CHECKING_AVAILABILITY
               }
-              onClick={handleRandomizeClick}
+              onClick={handleCreateClick}
             >
               Create Shortlink
             </StyledButton>

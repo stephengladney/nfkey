@@ -18,7 +18,7 @@ function App() {
       getLink(host, String(pathname).substring(1))
         .then((response) => response.json())
         .then((link) => {
-          if (link.url) {
+          if (link.destination_url) {
             setLink(link)
             setView(views.VERIFYING)
           } else {
@@ -33,7 +33,7 @@ function App() {
     if (view === views.VERIFIED) {
       const observer = new MutationObserver((_, observer) => {
         if (document.getElementById("container")) {
-          generateIframe(link.url)
+          generateIframe(link.destination_url)
           observer.disconnect()
         }
       })

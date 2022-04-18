@@ -49,11 +49,6 @@ const Description = styled.h2`
   }
 `
 
-const PersonalizedLinkOffer = styled.h4`
-  color: #ddd;
-  font-family: "Raleway";
-`
-
 const Highlighted = styled.span`
   color: #0cf;
 `
@@ -97,7 +92,7 @@ const StyledButton = styled.button`
     width: 80%;
   }
   @media screen and (min-width: 1025px) {
-    width: 215px;
+    min-width: 215px;
   }
 `
 
@@ -117,23 +112,9 @@ export function Homepage({ host, pathname, setView }) {
       <Description>
         Create Ethereum token based access for your content.
       </Description>
-
       <BodyContainer>
-        <BodyText>
-          No code or cost required. Simply enter your destination URL and the
-          smart contract address of the token required for access.
-        </BodyText>
+        <BodyText>No code. No gas fees for you or your visitors.</BodyText>
       </BodyContainer>
-      {/* {pathname && (
-        <PersonalizedLinkOffer>
-          Want{" "}
-          <Highlighted>
-            {host}
-            {pathname}
-          </Highlighted>
-          ? Click here.
-        </PersonalizedLinkOffer>
-      )} */}
       <ButtonContainer>
         <StyledButton onClick={() => setView(views.NEWLINK)}>
           Create new link
