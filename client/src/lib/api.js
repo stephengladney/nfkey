@@ -1,8 +1,7 @@
 import axios from "axios"
+
 export function getLink(host, path) {
-  return axios.get(`http://localhost:5000/api/link?host=${host}&path=${path}`, {
-    // headers: { Accept: "text/html" },
-  })
+  return axios.get(`api/link?host=${host}&path=${path}`, {})
 }
 
 export function createLink({
@@ -11,11 +10,8 @@ export function createLink({
   destination_url,
   requirement_smart_contract,
 }) {
-  return fetch(
+  return axios.post(
     `api/link?host=${host}&pathname=${pathname}&requirement_smart_contract=${requirement_smart_contract}&destination_url=${destination_url}`,
-    {
-      method: "POST",
-      headers: {},
-    }
+    {}
   )
 }
