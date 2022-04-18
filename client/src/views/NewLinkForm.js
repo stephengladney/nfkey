@@ -75,8 +75,7 @@ export function NewLinkForm() {
       setUrlPathFeedback(URL_CHECKING_AVAILABILITY)
       setTimeout(() => {
         getLink("localhost:3000", urlPath)
-          .then((response) => response.json())
-          .then((link) => {
+          .then(({ data: link }) => {
             if (link.destination_url) {
               setUrlPathFeedback(URL_IS_NOT_AVAILABLE)
             } else {

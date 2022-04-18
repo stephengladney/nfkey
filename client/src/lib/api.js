@@ -1,6 +1,7 @@
+import axios from "axios"
 export function getLink(host, path) {
-  return fetch(`api/link?host=${host}&path=${path}`, {
-    headers: { Accept: "text/html" },
+  return axios.get(`http://localhost:5000/api/link?host=${host}&path=${path}`, {
+    // headers: { Accept: "text/html" },
   })
 }
 
@@ -15,8 +16,6 @@ export function createLink({
     {
       method: "POST",
       headers: {},
-
-      // body: "",
     }
   )
 }

@@ -71,11 +71,9 @@ export function Verify({ link, setView }) {
       setIsAwaitingVerification(true)
       fetch(
         `http://localhost:5000/api/verify?link_id=${link.id}&wallet_address=${ethAccounts[0]}`
-      )
-        .then((response) => response.json())
-        .then((verdict) => {
-          setView(verdict.allow ? views.VERIFIED : views.HOMEPAGE)
-        })
+      ).then(({ data: verdict }) => {
+        setView(verdict.allow ? views.VERIFIED : views.HOMEPAGE)
+      })
     }
   }, [ethAccounts])
 

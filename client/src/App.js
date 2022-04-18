@@ -16,8 +16,7 @@ function App() {
   useEffect(() => {
     if (isPath) {
       getLink(host, String(pathname).substring(1))
-        .then((response) => response.json())
-        .then((link) => {
+        .then(({ data: link }) => {
           if (link.destination_url) {
             setLink(link)
             setView(views.VERIFYING)
