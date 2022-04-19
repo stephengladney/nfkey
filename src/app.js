@@ -8,7 +8,7 @@ const bodyParser = require("body-parser")
 
 sequelize.sync()
 
-app.use(express.static(path.resolve("../", "client", "build")))
+app.use(express.static(path.resolve("client", "build")))
 app.use(bodyParser.json())
 app.use(routes)
 
