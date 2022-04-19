@@ -19,14 +19,9 @@ import {
   StyledLabel,
   Title,
 } from "./NewLinkForm.styles"
+import { REGEX, URL_FEEDBACK, VIEWS } from "./const"
 
-const URL_IS_AVAILALABLE = "This URL is available!"
-const URL_IS_NOT_AVAILABLE = "Sorry, this URL is already taken."
-const URL_MINIMUM_3_CHARS = "URL path must be at least 3 characters."
-const URL_CHECKING_AVAILABILITY = "Checking availability..."
-const URL_BLANK = " "
-
-export function NewLinkForm() {
+export function NewLinkForm({ setNewLink, setView }) {
   const { pathname } = window.document.location
   const [destinationUrl, setDestinationUrl] = useState("")
   const [urlPath, setUrlPath] = useState(
@@ -35,9 +30,19 @@ export function NewLinkForm() {
   const [urlPathFeedback, setUrlPathFeedback] = useState("")
   const [smartContractAddress, setSmartContractAddress] = useState("")
   const typingTimer = useRef()
-  const isError =
-    urlPathFeedback === URL_IS_NOT_AVAILABLE ||
-    urlPathFeedback === URL_MINIMUM_3_CHARS
+
+  const isUrlPathError =
+    urlPathFeedback === URL_FEEDBACK.IS_NOT_AVAILABLE ||
+    urlPathFeedback === URL_FEEDBACK.MINIMUM_3_CHARS ||
+    urlPathFeedback === URL_FEEDBACK.INVALID
+
+  const isDestinationUrlError = !REGEX.DESTINATION_URL.test(destinationUrl)
+  const isSmartContractAddressError =
+    !REGEX.SMART_CONTRACT.test(smartContractAddress)
+
+  const isAbleToSave =
+    urlPathFeedback === URL_FEEDBACK.IS_AVAILALABLE &&
+    !isSmartContractAddressError & !isDestinationUrlError
 
   const handleRandomizeClick = () => {
     setUrlPath(generateId(6))
@@ -50,8 +55,11 @@ export function NewLinkForm() {
       requirement_smart_contract: smartContractAddress,
       destination_url: destinationUrl,
     })
-      .then((_) => alert("success"))
-      .catch((e) => alert(`failure: ${e}`))
+      .then((_) => {
+        setNewLink({ host: "nfkey.to", pathname: urlPath })
+        setView(VIEWS.NEWLINKSUCCESS)
+      })
+      .catch((e) => alert(`There was a problem.`))
   }
 
   const handleDestinationUrlChange = (e) => {
@@ -68,18 +76,23 @@ export function NewLinkForm() {
 
   useEffect(() => {
     clearTimeout(typingTimer.current)
-    if (String(urlPath).length < 3)
-      return setUrlPathFeedback(URL_MINIMUM_3_CHARS)
-    setUrlPathFeedback(URL_BLANK)
+    if (String(urlPath).length < 3) {
+      return setUrlPathFeedback(URL_FEEDBACK.MINIMUM_3_CHARS)
+    }
+    if (!REGEX.URL_PATH.test(String(urlPath))) {
+      return setUrlPathFeedback(URL_FEEDBACK.INVALID)
+    }
+
+    setUrlPathFeedback(URL_FEEDBACK.BLANK)
     typingTimer.current = setTimeout(() => {
-      setUrlPathFeedback(URL_CHECKING_AVAILABILITY)
+      setUrlPathFeedback(URL_FEEDBACK.CHECKING_AVAILABILITY)
       setTimeout(() => {
         getLink("localhost:3000", urlPath)
           .then(({ data: link }) => {
             if (link.destination_url) {
-              setUrlPathFeedback(URL_IS_NOT_AVAILABLE)
+              setUrlPathFeedback(URL_FEEDBACK.IS_NOT_AVAILABLE)
             } else {
-              setUrlPathFeedback(URL_IS_AVAILALABLE)
+              setUrlPathFeedback(URL_FEEDBACK.IS_AVAILALABLE)
             }
           })
           .catch((e) => alert(`error getting link: ${e}`))
@@ -93,10 +106,7 @@ export function NewLinkForm() {
         NF<Highlighted>Key</Highlighted>
       </Title>
       <BodyContainer>
-        <BodyText>
-          Enter the destination URL and the smart contract address of the token
-          required for access.
-        </BodyText>
+        <BodyText>Please complete all of the fields below.</BodyText>
         <FormContainer>
           <FormRow>
             <FormLeftColumn>
@@ -107,7 +117,7 @@ export function NewLinkForm() {
             <FormRightColumn>
               <StyledInput
                 customWidth={"40%"}
-                isError={isError}
+                isError={isUrlPathError}
                 onChange={handleUrlPathChange}
                 spellCheck={false}
                 value={urlPath}
@@ -118,8 +128,8 @@ export function NewLinkForm() {
           <ErrorTextContainer>
             <FormRightColumn>
               <InputFeedbackText
-                isError={isError}
-                isSuccess={urlPathFeedback === URL_IS_AVAILALABLE}
+                isError={isUrlPathError}
+                isSuccess={urlPathFeedback === URL_FEEDBACK.IS_AVAILALABLE}
               >
                 {urlPathFeedback}
               </InputFeedbackText>
@@ -132,6 +142,7 @@ export function NewLinkForm() {
             </FormLeftColumn>
             <FormRightColumn>
               <StyledInput
+                isError={destinationUrl && isDestinationUrlError}
                 onChange={handleDestinationUrlChange}
                 spellCheck={false}
                 value={destinationUrl}
@@ -145,6 +156,7 @@ export function NewLinkForm() {
             </FormLeftColumn>
             <FormRightColumn>
               <StyledInput
+                isError={smartContractAddress && isSmartContractAddressError}
                 onChange={handleSmartContractAddressChange}
                 spellCheck={false}
                 value={smartContractAddress}
@@ -155,14 +167,7 @@ export function NewLinkForm() {
             <StyledButton onClick={handleRandomizeClick}>
               Randomize URL
             </StyledButton>
-            <StyledButton
-              disabled={
-                isError ||
-                urlPathFeedback === URL_BLANK ||
-                urlPathFeedback === URL_CHECKING_AVAILABILITY
-              }
-              onClick={handleCreateClick}
-            >
+            <StyledButton disabled={!isAbleToSave} onClick={handleCreateClick}>
               Create Shortlink
             </StyledButton>
           </ButtonContainer>

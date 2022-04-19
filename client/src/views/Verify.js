@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useState } from "react"
 import styled from "styled-components"
 import * as metamask from "../lib/metamask"
-import * as views from "./const"
+import { VIEWS } from "./const"
 import axios from "axios"
 
 const Container = styled.div`
@@ -73,7 +73,7 @@ export function Verify({ link, setView }) {
       axios
         .get(`api/verify?link_id=${link.id}&wallet_address=${ethAccounts[0]}`)
         .then(({ data: verdict }) => {
-          setView(verdict.allow ? views.VERIFIED : views.HOMEPAGE)
+          setView(verdict.allow ? VIEWS.VERIFIED : VIEWS.HOMEPAGE)
         })
     }
   }, [ethAccounts])

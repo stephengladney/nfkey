@@ -9,11 +9,11 @@ router.get("", (req, res) => {
 })
 
 router.post("", (req, res) => {
-  Link.create(req.query)
+  Link.create(req.body)
     .then((link) => {
       res.status(200).send(link)
     })
-    .catch((e) => console.log(e))
+    .catch((e) => res.status(503).send())
 })
 
 module.exports = router

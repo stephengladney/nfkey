@@ -4,14 +4,16 @@ import { generateIframe } from "./lib/iframe"
 import { getLink } from "./lib/api"
 import { Verify } from "./views/Verify"
 import { Homepage } from "./views/Homepage"
-import * as views from "./views/const"
+import { VIEWS } from "./views/const"
 import { NewLinkForm } from "./views/NewLinkForm"
+import { NewLinkSuccess } from "./views/NewLinkSuccess"
 
 function App() {
   const { host, pathname } = window.document.location
   const isPath = pathname !== "/"
   const [link, setLink] = useState()
-  const [view, setView] = useState(isPath ? views.LOADING : views.HOMEPAGE)
+  const [view, setView] = useState(isPath ? VIEWS.LOADING : VIEWS.HOMEPAGE)
+  const [newLink, setNewLink] = useState({})
 
   useEffect(() => {
     if (isPath) {
@@ -19,9 +21,9 @@ function App() {
         .then(({ data: link }) => {
           if (link.destination_url) {
             setLink(link)
-            setView(views.VERIFYING)
+            setView(VIEWS.VERIFYING)
           } else {
-            setView(views.HOMEPAGE)
+            setView(VIEWS.HOMEPAGE)
           }
         })
         .catch((e) => alert(`error getting link: ${e}`))
@@ -29,7 +31,7 @@ function App() {
   }, [])
 
   useEffect(() => {
-    if (view === views.VERIFIED) {
+    if (view === VIEWS.VERIFIED) {
       const observer = new MutationObserver((_, observer) => {
         if (document.getElementById("container")) {
           generateIframe(link.destination_url)
@@ -47,10 +49,15 @@ function App() {
 
   return (
     <div className="App">
-      {view === views.VERIFYING && <Verify link={link} setView={setView} />}
-      {view === views.VERIFIED && <div id="container"></div>}
-      {view === views.NEWLINK && <NewLinkForm />}
-      {view === views.HOMEPAGE && (
+      {view === VIEWS.VERIFYING && <Verify link={link} setView={setView} />}
+      {view === VIEWS.VERIFIED && <div id="container"></div>}
+      {view === VIEWS.NEWLINKFORM && (
+        <NewLinkForm setNewLink={setNewLink} setView={setView} />
+      )}
+      {view === VIEWS.NEWLINKSUCCESS && (
+        <NewLinkSuccess newLink={newLink} setView={setView} />
+      )}
+      {view === VIEWS.HOMEPAGE && (
         <div className="App">
           {
             <Homepage

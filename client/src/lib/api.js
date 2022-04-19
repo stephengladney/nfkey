@@ -1,6 +1,11 @@
 import axios from "axios"
 
 export function getLink(host, path) {
+  // return new Promise((resolve, reject) => {
+  //   resolve({
+  //     data: {},
+  //   })
+  // })
   return axios.get(`api/link?host=${host}&path=${path}`, {})
 }
 
@@ -10,8 +15,15 @@ export function createLink({
   destination_url,
   requirement_smart_contract,
 }) {
-  return axios.post(
-    `api/link?host=${host}&pathname=${pathname}&requirement_smart_contract=${requirement_smart_contract}&destination_url=${destination_url}`,
-    {}
-  )
+  // return new Promise((resolve, reject) => {
+  //   resolve({
+  //     data: {},
+  //   })
+  // })
+  return axios.post("api/link", {
+    host,
+    pathname,
+    requirement_smart_contract,
+    destination_url,
+  })
 }

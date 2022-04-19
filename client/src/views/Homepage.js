@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import * as views from "./const"
+import { VIEWS } from "./const"
 
 const Container = styled.div`
   display: flex;
@@ -116,7 +116,7 @@ export function Homepage({ host, pathname, setView }) {
         <BodyText>No code. No gas fees for you or your visitors.</BodyText>
       </BodyContainer>
       <ButtonContainer>
-        <StyledButton onClick={() => setView(views.NEWLINK)}>
+        <StyledButton onClick={() => setView(VIEWS.NEWLINKFORM)}>
           Create new link
         </StyledButton>
       </ButtonContainer>

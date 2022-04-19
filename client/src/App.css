@@ -6,6 +6,15 @@
   color: #61dafb;
 }
 
+a {
+  color: #0cf;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
 input:focus {
   outline: none;
 }
