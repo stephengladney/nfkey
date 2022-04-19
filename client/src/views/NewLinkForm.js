@@ -7,6 +7,7 @@ import {
   BodyText,
   ButtonContainer,
   ErrorTextContainer,
+  FadeBlock,
   FormContainer,
   FormLeftColumn,
   FormRightColumn,
@@ -18,10 +19,11 @@ import {
   StyledInput,
   StyledLabel,
   Title,
-} from "./NewLinkForm.styles"
+} from "./styles"
 import { REGEX, URL_FEEDBACK, VIEWS } from "./const"
+import { Footer } from "../components/Footer"
 
-export function NewLinkForm({ setNewLink, setView }) {
+export function NewLinkForm({ fade, setFade, setNewLink, setView }) {
   const { pathname } = window.document.location
   const [destinationUrl, setDestinationUrl] = useState("")
   const [urlPath, setUrlPath] = useState(
@@ -57,7 +59,8 @@ export function NewLinkForm({ setNewLink, setView }) {
     })
       .then((_) => {
         setNewLink({ host: "nfkey.to", pathname: urlPath })
-        setView(VIEWS.NEWLINKSUCCESS)
+        setFade({ in: false })
+        setTimeout(() => setView(VIEWS.NEWLINKSUCCESS), 800)
       })
       .catch((e) => alert(`There was a problem.`))
   }
@@ -100,79 +103,85 @@ export function NewLinkForm({ setNewLink, setView }) {
     }, 1000)
   }, [urlPath])
 
+  useEffect(() => {
+    setFade({ in: true })
+  }, [])
+
   return (
     <Container>
       <Title>
         NF<Highlighted>Key</Highlighted>
       </Title>
-      <BodyContainer>
-        <BodyText>Please complete all of the fields below.</BodyText>
-        <FormContainer>
-          <FormRow>
-            <FormLeftColumn>
-              <StyledLabel>Shortlink</StyledLabel>
-              <NFKeyURL>nfkey.to/</NFKeyURL>
-            </FormLeftColumn>
-
-            <FormRightColumn>
-              <StyledInput
-                customWidth={"40%"}
-                isError={isUrlPathError}
-                onChange={handleUrlPathChange}
-                spellCheck={false}
-                value={urlPath}
-              />
-            </FormRightColumn>
-          </FormRow>
-
-          <ErrorTextContainer>
-            <FormRightColumn>
-              <InputFeedbackText
-                isError={isUrlPathError}
-                isSuccess={urlPathFeedback === URL_FEEDBACK.IS_AVAILALABLE}
+      <FadeBlock fade={fade}>
+        <BodyContainer style={{ marginTop: "30px" }}>
+          <BodyText>Please complete all of the fields below.</BodyText>
+          <FormContainer>
+            <FormRow>
+              <FormLeftColumn>
+                <StyledLabel>Shortlink</StyledLabel>
+                <NFKeyURL>nfkey.to/</NFKeyURL>
+              </FormLeftColumn>
+              <FormRightColumn>
+                <StyledInput
+                  customWidth={"40%"}
+                  isError={isUrlPathError}
+                  onChange={handleUrlPathChange}
+                  spellCheck={false}
+                  value={urlPath}
+                />
+              </FormRightColumn>
+            </FormRow>
+            <ErrorTextContainer>
+              <FormRightColumn>
+                <InputFeedbackText
+                  isError={isUrlPathError}
+                  isSuccess={urlPathFeedback === URL_FEEDBACK.IS_AVAILALABLE}
+                >
+                  {urlPathFeedback}
+                </InputFeedbackText>
+              </FormRightColumn>
+            </ErrorTextContainer>
+            <FormRow>
+              <FormLeftColumn>
+                <StyledLabel>Destination URL</StyledLabel>
+              </FormLeftColumn>
+              <FormRightColumn>
+                <StyledInput
+                  isError={destinationUrl && isDestinationUrlError}
+                  onChange={handleDestinationUrlChange}
+                  spellCheck={false}
+                  value={destinationUrl}
+                />
+              </FormRightColumn>
+            </FormRow>
+            <FormRow>
+              <FormLeftColumn>
+                <StyledLabel>Smart contract address</StyledLabel>
+              </FormLeftColumn>
+              <FormRightColumn>
+                <StyledInput
+                  isError={smartContractAddress && isSmartContractAddressError}
+                  onChange={handleSmartContractAddressChange}
+                  spellCheck={false}
+                  value={smartContractAddress}
+                />
+              </FormRightColumn>
+            </FormRow>
+            <ButtonContainer>
+              <StyledButton onClick={handleRandomizeClick}>
+                Randomize URL
+              </StyledButton>
+              <StyledButton
+                disabled={!isAbleToSave}
+                onClick={handleCreateClick}
               >
-                {urlPathFeedback}
-              </InputFeedbackText>
-            </FormRightColumn>
-          </ErrorTextContainer>
-
-          <FormRow>
-            <FormLeftColumn>
-              <StyledLabel>Destination URL</StyledLabel>
-            </FormLeftColumn>
-            <FormRightColumn>
-              <StyledInput
-                isError={destinationUrl && isDestinationUrlError}
-                onChange={handleDestinationUrlChange}
-                spellCheck={false}
-                value={destinationUrl}
-              />
-            </FormRightColumn>
-          </FormRow>
-
-          <FormRow>
-            <FormLeftColumn>
-              <StyledLabel>Smart contract address</StyledLabel>
-            </FormLeftColumn>
-            <FormRightColumn>
-              <StyledInput
-                isError={smartContractAddress && isSmartContractAddressError}
-                onChange={handleSmartContractAddressChange}
-                spellCheck={false}
-                value={smartContractAddress}
-              />
-            </FormRightColumn>
-          </FormRow>
-          <ButtonContainer>
-            <StyledButton onClick={handleRandomizeClick}>
-              Randomize URL
-            </StyledButton>
-            <StyledButton disabled={!isAbleToSave} onClick={handleCreateClick}>
-              Create Shortlink
-            </StyledButton>
-          </ButtonContainer>
-        </FormContainer>
-      </BodyContainer>
+                Create Shortlink
+              </StyledButton>
+            </ButtonContainer>
+          </FormContainer>
+        </BodyContainer>
+        <Footer />
+      </FadeBlock>
     </Container>
   )
 }

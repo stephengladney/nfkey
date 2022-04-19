@@ -14,6 +14,7 @@ function App() {
   const [link, setLink] = useState()
   const [view, setView] = useState(isPath ? VIEWS.LOADING : VIEWS.HOMEPAGE)
   const [newLink, setNewLink] = useState({})
+  const [fade, setFade] = useState({ in: false })
 
   useEffect(() => {
     if (isPath) {
@@ -52,20 +53,24 @@ function App() {
       {view === VIEWS.VERIFYING && <Verify link={link} setView={setView} />}
       {view === VIEWS.VERIFIED && <div id="container"></div>}
       {view === VIEWS.NEWLINKFORM && (
-        <NewLinkForm setNewLink={setNewLink} setView={setView} />
+        <NewLinkForm
+          fade={fade}
+          setFade={setFade}
+          setNewLink={setNewLink}
+          setView={setView}
+        />
       )}
       {view === VIEWS.NEWLINKSUCCESS && (
-        <NewLinkSuccess newLink={newLink} setView={setView} />
+        <NewLinkSuccess
+          fade={fade}
+          setFade={setFade}
+          newLink={newLink}
+          setView={setView}
+        />
       )}
       {view === VIEWS.HOMEPAGE && (
         <div className="App">
-          {
-            <Homepage
-              host={host}
-              pathname={isPath ? pathname : null}
-              setView={setView}
-            />
-          }
+          {<Homepage fade={fade} setFade={setFade} setView={setView} />}
         </div>
       )}
     </div>

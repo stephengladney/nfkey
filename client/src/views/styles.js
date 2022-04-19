@@ -8,6 +8,7 @@ export const Container = styled.div`
   width: 100%;
 
   @media screen and (max-width: 768px) {
+    /* margin-top: 15%; */
   }
 
   @media screen and (min-width: 769px) and (max-width: 1024px) {
@@ -33,8 +34,34 @@ export const Highlighted = styled.span`
   color: #0cf;
 `
 
+export const UndecoratedLink = styled.a`
+  text-decoration: none;
+
+  :hover {
+    text-decoration: none;
+  }
+`
+
+export const Description = styled.h2`
+  color: #ddd;
+  font-family: "Raleway";
+  padding-left: 20px;
+  padding-right: 20px;
+
+  @media screen and (max-width: 768px) {
+    font-size: 1.5em;
+  }
+
+  @media screen and (min-width: 769px) and (max-width: 1024px) {
+    font-size: 1.8em;
+  }
+
+  @media screen and (min-width: 1025px) {
+    font-size: 2em;
+  }
+`
+
 export const BodyContainer = styled.div`
-  margin-top: 30px;
   @media screen and (max-width: 768px) {
     width: 80%;
   }
@@ -176,7 +203,7 @@ export const StyledButton = styled.button`
   text-transform: uppercase;
 
   :hover {
-    background-color: #001026;
+    background-color: ${(p) => !p.disabled && "#001026"};
   }
 
   @media screen and (max-width: 768px) {
@@ -224,4 +251,12 @@ export const NFKeyURLSpacer = styled.div`
     flex-grow: 1;
     text-align: left;
   }
+`
+export const FadeBlock = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  opacity: ${(p) => (p.fade.in ? 1 : 0)};
+  transition: opacity 1s ease;
 `
