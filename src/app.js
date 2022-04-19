@@ -12,6 +12,6 @@ app.use(express.static(path.resolve("client", "build")))
 app.use(bodyParser.json())
 app.use(routes)
 
-app.listen(5000, () => {
+app.listen(process.env.PORT || 5000, () => {
   console.log("nfkey server is running!")
 })
