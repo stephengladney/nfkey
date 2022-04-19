@@ -19,6 +19,7 @@ import {
   StyledInput,
   StyledLabel,
   Title,
+  UndecoratedLink,
 } from "./styles"
 import { REGEX, URL_FEEDBACK, VIEWS } from "./const"
 import { Footer } from "../components/Footer"
@@ -104,14 +105,16 @@ export function NewLinkForm({ fade, setFade, setNewLink, setView }) {
   }, [urlPath])
 
   useEffect(() => {
-    setFade({ in: true })
+    setTimeout(() => setFade({ in: true }), 0)
   }, [])
 
   return (
     <Container>
-      <Title>
-        NF<Highlighted>Key</Highlighted>
-      </Title>
+      <UndecoratedLink href="https://nfkey.to">
+        <Title>
+          NF<Highlighted>Key</Highlighted>
+        </Title>
+      </UndecoratedLink>
       <FadeBlock fade={fade}>
         <BodyContainer style={{ marginTop: "30px" }}>
           <BodyText>Please complete all of the fields below.</BodyText>
