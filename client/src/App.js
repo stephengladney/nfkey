@@ -20,7 +20,7 @@ function App() {
     if (isPath) {
       getLink(host, String(pathname).substring(1))
         .then(({ data: link }) => {
-          if (true) {
+          if (link.destination_url) {
             setLink(link)
             setView(VIEWS.VERIFYING)
           } else {
