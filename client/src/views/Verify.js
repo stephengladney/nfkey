@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useState } from "react"
 import styled from "styled-components"
-import * as metamask from "../lib/metamask"
+import * as wallet from "../lib/wallet"
 import { VIEWS } from "./const"
 import axios from "axios"
 
@@ -59,24 +59,46 @@ const Button = styled.button`
 `
 
 export function Verify({ link, setView }) {
-  const [ethAccounts, setEthAccounts] = useState([])
+  const [ethAccount, setEthAccount] = useState()
+  const [isWalletConnected, setIsWalletConnected] = useState(false)
   const [isAwaitingVerification, setIsAwaitingVerification] = useState(false)
+  const [isFailedToVerify, setIsFailedToVerify] = useState(false)
 
-  const handleConnectMetamask = async () => {
-    const accounts = await metamask.getEthAccounts()
-    setEthAccounts(accounts)
+  const handleMetamask = async () => {
+    try {
+      await wallet.getEthAccounts()
+      setIsWalletConnected(true)
+    } catch {}
+  }
+
+  const verifyWallet = async () => {
+    try {
+      const verifyParams = await wallet.getSignatureAndAddress(
+        "Welcome to NFKey!\n\nPlease click Sign to verify that you own this wallet. This will not result in a blockchain transaction or incur any gas fees."
+      )
+      if (wallet.verifySignature(verifyParams)) {
+        setEthAccount(verifyParams.address)
+      }
+    } catch {
+      setIsAwaitingVerification(false)
+      setIsFailedToVerify(true)
+    }
   }
 
   useEffect(() => {
-    if (ethAccounts.length > 0) {
+    if (isWalletConnected) verifyWallet()
+  }, [isWalletConnected])
+
+  useEffect(() => {
+    if (ethAccount) {
       setIsAwaitingVerification(true)
       axios
-        .get(`api/verify?link_id=${link.id}&wallet_address=${ethAccounts[0]}`)
+        .get(`api/verify?link_id=${link.id}&wallet_address=${ethAccount}`)
         .then(({ data: verdict }) => {
           setView(verdict.allow ? VIEWS.VERIFIED : VIEWS.HOMEPAGE)
         })
     }
-  }, [ethAccounts])
+  }, [ethAccount])
 
   return (
     <Container>
@@ -84,8 +106,8 @@ export function Verify({ link, setView }) {
         NF<Highlighted>Key</Highlighted>
       </Title>
       {isAwaitingVerification && <Description>Verifying...</Description>}
-
-      {!isAwaitingVerification && (
+      {isFailedToVerify && <Description>Verification failed.</Description>}
+      {!isFailedToVerify && !isAwaitingVerification && (
         <Fragment>
           <Description>
             This content requires ownership of a specific ERC-20 token.
@@ -94,7 +116,7 @@ export function Verify({ link, setView }) {
             Please verify ownership of the required token(s).
           </Description>
           <SmallText>Choose your wallet...</SmallText>
-          <Button onClick={handleConnectMetamask}>Metamask</Button>
+          <Button onClick={handleMetamask}>Metamask</Button>
         </Fragment>
       )}
     </Container>
