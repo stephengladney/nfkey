@@ -4,6 +4,10 @@ const path = require("path")
 
 router.use("/api", apiRouter)
 
+router.get("/*", (req, res) => {
+  res.sendFile(path.resolve("../", "client", "build", "index.html"))
+})
+
 router.get("/", (req, res) => {
   res.sendFile(path.resolve("../", "client", "build", "index.html"))
 })
