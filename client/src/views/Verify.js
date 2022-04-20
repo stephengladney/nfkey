@@ -95,7 +95,6 @@ export function Verify({ link, setView }) {
       axios
         .get(`api/verify?link_id=${link.id}&wallet_address=${ethAccount}`)
         .then(({ data: verdict }) => {
-          console.log(verdict)
           if (verdict.allow) setView(VIEWS.VERIFIED)
           else {
             setIsAwaitingVerification(false)
