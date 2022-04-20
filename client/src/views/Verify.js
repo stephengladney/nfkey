@@ -96,7 +96,10 @@ export function Verify({ link, setView }) {
         .get(`api/verify?link_id=${link.id}&wallet_address=${ethAccount}`)
         .then(({ data: verdict }) => {
           if (verdict.allow) setView(VIEWS.VERIFIED)
-          else setIsFailedToVerify(true)
+          else {
+            setIsAwaitingVerification(false)
+            setIsFailedToVerify(true)
+          }
         })
     }
   }, [ethAccount])
