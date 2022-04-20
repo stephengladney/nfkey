@@ -1,6 +1,6 @@
 import "./App.css"
 import { useEffect, useState } from "react"
-import { generateIframe } from "./lib/iframe"
+// import { generateIframe } from "./lib/iframe"
 import { getLink } from "./lib/api"
 import { Verify } from "./views/Verify"
 import { Homepage } from "./views/Homepage"
@@ -33,17 +33,17 @@ function App() {
 
   useEffect(() => {
     if (view === VIEWS.VERIFIED) {
-      // const observer = new MutationObserver((_, observer) => {
-      // if (document.getElementById("container")) {
-      setTimeout(() => generateIframe(link.destination_url), 1000)
-      // observer.disconnect()
+      document.getElementById("if").contentWindow.document.location =
+        link.destination_url
     }
   }, [view])
 
   return (
     <div className="App">
       {view === VIEWS.VERIFYING && <Verify link={link} setView={setView} />}
-      {view === VIEWS.VERIFIED && <div id="container"></div>}
+      {view === VIEWS.VERIFIED && (
+        <iframe id="if" frameborder="0" width="100%" height="100vh"></iframe>
+      )}
       {view === VIEWS.NEWLINKFORM && (
         <NewLinkForm
           fade={fade}
