@@ -33,18 +33,10 @@ function App() {
 
   useEffect(() => {
     if (view === VIEWS.VERIFIED) {
-      const observer = new MutationObserver((_, observer) => {
-        if (document.getElementById("container")) {
-          generateIframe(link.destination_url)
-          observer.disconnect()
-        }
-      })
-
-      observer.observe(document, {
-        attributes: true,
-        childList: true,
-        subtree: true,
-      })
+      // const observer = new MutationObserver((_, observer) => {
+      // if (document.getElementById("container")) {
+      setTimeout(() => generateIframe(link.destination_url), 1000)
+      // observer.disconnect()
     }
   }, [view])
 
