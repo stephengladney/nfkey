@@ -42,7 +42,11 @@ function App() {
     <div className="App">
       {view === VIEWS.VERIFYING && <Verify link={link} setView={setView} />}
       {view === VIEWS.VERIFIED && (
-        <iframe id="if" frameborder="0" width="100%" height="100vh"></iframe>
+        <iframe
+          id="if"
+          frameborder="0"
+          style={{ height: "100vh", width: "100%" }}
+        ></iframe>
       )}
       {view === VIEWS.NEWLINKFORM && (
         <NewLinkForm
