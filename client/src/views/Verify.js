@@ -95,7 +95,8 @@ export function Verify({ link, setView }) {
       axios
         .get(`api/verify?link_id=${link.id}&wallet_address=${ethAccount}`)
         .then(({ data: verdict }) => {
-          setView(verdict.allow ? VIEWS.VERIFIED : VIEWS.HOMEPAGE)
+          if (verdict.allow) setView(VIEWS.VERIFIED)
+          else setIsFailedToVerify(true)
         })
     }
   }, [ethAccount])
