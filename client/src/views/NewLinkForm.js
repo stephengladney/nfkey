@@ -25,7 +25,7 @@ import { REGEX, URL_FEEDBACK, VIEWS } from "./const"
 import { Footer } from "../components/Footer"
 
 export function NewLinkForm({ fade, setFade, setNewLink, setView }) {
-  const { pathname } = window.document.location
+  const { host, pathname } = window.document.location
   const [destinationUrl, setDestinationUrl] = useState("")
   const [urlPath, setUrlPath] = useState(
     pathname !== "/" ? String(pathname).substring(1) : generateId(6)
@@ -91,7 +91,7 @@ export function NewLinkForm({ fade, setFade, setNewLink, setView }) {
     typingTimer.current = setTimeout(() => {
       setUrlPathFeedback(URL_FEEDBACK.CHECKING_AVAILABILITY)
       setTimeout(() => {
-        getLink("localhost:3000", urlPath)
+        getLink("nfkey.to", urlPath)
           .then(({ data: link }) => {
             if (link.destination_url) {
               setUrlPathFeedback(URL_FEEDBACK.IS_NOT_AVAILABLE)
