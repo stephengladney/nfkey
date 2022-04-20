@@ -11,7 +11,6 @@ router.get("", async (req, res) => {
     const link = await Link.findOne({ where: { id: req.query.link_id } })
     const contract = ethereum.newContract(link.requirement_smart_contract)
     const balance = await contract.balanceOf(req.query.wallet_address)
-    console.log(balance)
     res.status(200).send({ allow: balance > 0 ? true : false })
   } catch (e) {}
 })
