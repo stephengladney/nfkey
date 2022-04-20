@@ -5,7 +5,7 @@ export function getEthAccounts() {
   return ethereum.request({ method: "eth_requestAccounts" })
 }
 
-const provider = ethers ? new ethers.providers.Web3Provider(ethereum) : null
+const provider = ethereum ? new ethers.providers.Web3Provider(ethereum) : null
 
 export async function getSignatureAndAddress(message) {
   const signer = provider.getSigner()
