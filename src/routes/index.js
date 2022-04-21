@@ -8,6 +8,10 @@ router.get("/sitemap.xml", (req, res) => {
   res.sendFile(path.resolve("sitemap.xml"))
 })
 
+router.get("/googleaf69fafbcd3f09b4.html", (req, res) => {
+  res.sendFile(path.resolve("googleaf69fafbcd3f09b4.html"))
+})
+
 router.get("*", (req, res) => {
   res.sendFile(path.resolve("client", "build", "index.html"))
 })
