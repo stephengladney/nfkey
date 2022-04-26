@@ -89,6 +89,7 @@ export const StyledInput = styled.input`
   font-family: "Mukta";
   font-size: 1em;
   padding: 6px;
+  padding-left: 10px;
 
   @media screen and (min-width: 1025px) {
     width: ${(p) => (p.customWidth ? p.customWidth : "100%")};

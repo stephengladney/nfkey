@@ -17,6 +17,7 @@ function App() {
   const [fade, setFade] = useState({ in: false })
 
   useEffect(() => {
+    document.title = "NFKey"
     if (isPath) {
       getLink(host, String(pathname).substring(1))
         .then(({ data: link }) => {

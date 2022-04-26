@@ -152,6 +152,7 @@ export function NewLinkForm({ fade, setFade, setNewLink, setView }) {
                 <StyledInput
                   isError={destinationUrl && isDestinationUrlError}
                   onChange={handleDestinationUrlChange}
+                  placeholder={"https://example.com"}
                   spellCheck={false}
                   value={destinationUrl}
                 />
@@ -165,6 +166,7 @@ export function NewLinkForm({ fade, setFade, setNewLink, setView }) {
                 <StyledInput
                   isError={smartContractAddress && isSmartContractAddressError}
                   onChange={handleSmartContractAddressChange}
+                  placeholder={"Token required for access"}
                   spellCheck={false}
                   value={smartContractAddress}
                 />
