@@ -1,6 +1,5 @@
 import "./App.css"
 import { useEffect, useState } from "react"
-// import { generateIframe } from "./lib/iframe"
 import { createVisit, getLink } from "./lib/api"
 import { Verify } from "./views/Verify"
 import { Homepage } from "./views/Homepage"
