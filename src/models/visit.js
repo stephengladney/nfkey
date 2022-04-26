@@ -1,7 +1,7 @@
 const db = require("../config/sequelize")
 
 const Visit = db.sequelize.define(
-  "links",
+  "visits",
   {
     id: {
       allowNull: false,
