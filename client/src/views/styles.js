@@ -64,7 +64,7 @@ export const Description = styled.h2`
 
 export const BodyContainer = styled.div`
   @media screen and (max-width: 768px) {
-    width: 80%;
+    width: ${(p) => (p.customMobileWidth ? p.customMobileWidth : null)};
   }
 
   @media screen and (min-width: 769px) and (max-width: 1024px) {
@@ -72,7 +72,7 @@ export const BodyContainer = styled.div`
   }
 
   @media screen and (min-width: 1025px) {
-    /* max-width: 70%; */
+    max-width: 700px;
   }
 `
 
@@ -215,6 +215,7 @@ export const StyledButton = styled.button`
   @media screen and (min-width: 1025px) {
     flex-grow: 1;
     margin-left: 10px;
+    min-width: 200px;
   }
 `
 

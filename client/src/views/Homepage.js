@@ -27,8 +27,13 @@ export function Homepage({ fade, setFade, setView }) {
           <Description>
             Create Ethereum token based access for your content.
           </Description>
-          <BodyContainer>
-            <BodyText>No code. No gas fees. No questions.</BodyText>
+          <BodyContainer customMobileWidth={"85%"}>
+            <BodyText style={{ color: "#aeaeae" }}>
+              NFKey is a free tool that allows you to create shortlinks to your
+              private web2 content. These links require visitors to verify
+              ownership of a specific Ethereum token or NFT in order to access
+              the content. No code. No gas fees.
+            </BodyText>
           </BodyContainer>
           <ButtonContainer>
             <StyledButton
@@ -37,7 +42,7 @@ export function Homepage({ fade, setFade, setView }) {
                 setTimeout(() => setView(VIEWS.NEWLINKFORM), 800)
               }}
             >
-              Create new link
+              Create new shortlink
             </StyledButton>
           </ButtonContainer>
           <Footer />
