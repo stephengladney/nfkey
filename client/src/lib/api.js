@@ -17,3 +17,9 @@ export function createLink({
     destination_url,
   })
 }
+
+export function createVisit({ page }) {
+  return axios.post("api/visit", {
+    page,
+  })
+}

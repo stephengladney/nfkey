@@ -1,7 +1,7 @@
 import "./App.css"
 import { useEffect, useState } from "react"
 // import { generateIframe } from "./lib/iframe"
-import { getLink } from "./lib/api"
+import { createVisit, getLink } from "./lib/api"
 import { Verify } from "./views/Verify"
 import { Homepage } from "./views/Homepage"
 import { VIEWS } from "./views/const"
@@ -32,6 +32,9 @@ function App() {
   }, [])
 
   useEffect(() => {
+    if (view === VIEWS.HOMEPAGE || view === VIEWS.NEWLINKFORM) {
+      createVisit({ page: view })
+    }
     if (view === VIEWS.VERIFIED) {
       document.getElementById("if").contentWindow.document.location =
         link.destination_url
