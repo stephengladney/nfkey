@@ -30,7 +30,7 @@ export function Homepage({ fade, setFade, setView }) {
           <BodyContainer customMobileWidth={"85%"}>
             <BodyText style={{ color: "#aeaeae" }}>
               NFKey is a free tool that allows you to create shortlinks to your
-              private web2 content. These links require visitors to verify
+              private Web 2.0 content. These links require visitors to verify
               ownership of a specific Ethereum token or NFT in order to access
               the content. No code. No gas fees.
             </BodyText>
