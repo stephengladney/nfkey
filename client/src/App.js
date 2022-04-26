@@ -69,9 +69,7 @@ function App() {
         />
       )}
       {view === VIEWS.HOMEPAGE && (
-        <div className="App">
-          {<Homepage fade={fade} setFade={setFade} setView={setView} />}
-        </div>
+        <Homepage fade={fade} setFade={setFade} setView={setView} />
       )}
     </div>
   )
