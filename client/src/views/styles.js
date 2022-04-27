@@ -260,6 +260,8 @@ export const FadeBlock = styled.div`
   flex-direction: column;
   align-items: center;
 
-  opacity: ${(p) => (p.fade.in ? 1 : 0)};
-  transition: opacity 1s ease;
+  @media screen and (min-width: 1025px) {
+    opacity: ${(p) => (p.fade.in ? 1 : 0)};
+    transition: opacity 1s ease;
+  }
 `
