@@ -114,7 +114,7 @@ export function Verify({ link, setView }) {
       {!isFailedToVerify && !isAwaitingVerification && (
         <Fragment>
           <Description>
-            This content requires ownership of a specific ERC-20 token.
+            This content requires ownership of a specific ERC-721 token.
           </Description>
           <Description>
             Please verify ownership of the required token(s).
