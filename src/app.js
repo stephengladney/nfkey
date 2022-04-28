@@ -14,6 +14,7 @@ app.use(routes)
 
 app.use((req, res, next) => {
   if (req.protocol === "http") {
+    console.log("http accessed")
     res.redirect(`https://${req.headers.host}/${req.url}`)
   }
   next()
