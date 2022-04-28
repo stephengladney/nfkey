@@ -12,6 +12,13 @@ app.use(express.static(path.resolve("client", "build")))
 app.use(bodyParser.json())
 app.use(routes)
 
+app.use((req, res, next) => {
+  if (req.protocol === "http") {
+    res.redirect(`https://${req.headers.host}/${req.url}`)
+  }
+  next()
+})
+
 app.listen(process.env.PORT || 5000, () => {
   console.log("nfkey server is running!")
 })
