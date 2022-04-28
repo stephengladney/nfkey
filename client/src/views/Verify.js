@@ -66,28 +66,32 @@ export function Verify({ link, setView }) {
 
   const handleMetamask = async () => {
     try {
-      await wallet.getEthAccounts()
+      await verifyWallet()
       setIsWalletConnected(true)
-    } catch {}
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   const verifyWallet = async () => {
     try {
+      await wallet.connectWallet()
       const verifyParams = await wallet.getSignatureAndAddress(
         "Welcome to NFKey!\n\nPlease click Sign to verify that you own this wallet. This will not result in a blockchain transaction or incur any gas fees."
       )
       if (wallet.verifySignature(verifyParams)) {
         setEthAccount(verifyParams.address)
       }
-    } catch {
+    } catch (e) {
+      console.log(e)
       setIsAwaitingVerification(false)
       setIsFailedToVerify(true)
     }
   }
 
-  useEffect(() => {
-    if (isWalletConnected) verifyWallet()
-  }, [isWalletConnected])
+  // useEffect(() => {
+  //   if (isWalletConnected)
+  // }, [isWalletConnected])
 
   useEffect(() => {
     if (ethAccount) {
@@ -119,8 +123,8 @@ export function Verify({ link, setView }) {
           <Description>
             Please verify ownership of the required token(s).
           </Description>
-          <SmallText>Choose your wallet...</SmallText>
-          <Button onClick={handleMetamask}>Metamask</Button>
+          {/* <SmallText>Choose your wallet...</SmallText> */}
+          <Button onClick={handleMetamask}>Verify Ownership</Button>
         </Fragment>
       )}
     </Container>
