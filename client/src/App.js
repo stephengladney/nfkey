@@ -11,8 +11,7 @@ function App() {
   const { host, pathname } = window.document.location
   const isPath = pathname !== "/"
   const [link, setLink] = useState()
-  // const [view, setView] = useState(isPath ? VIEWS.LOADING : VIEWS.HOMEPAGE)
-  const [view, setView] = useState(VIEWS.VERIFYING)
+  const [view, setView] = useState(isPath ? VIEWS.LOADING : VIEWS.HOMEPAGE)
   const [newLink, setNewLink] = useState({})
   const [fade, setFade] = useState({ in: false })
 
