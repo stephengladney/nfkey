@@ -6,23 +6,21 @@ import WalletConnectProvider from "@walletconnect/web3-provider"
 let provider
 
 const web3Modal = new Web3Modal({
-  network: "mainnet", // optional
-  cacheProvider: false, // optional
+  network: "mainnet",
+  cacheProvider: false,
   theme: "dark",
   providerOptions: {
     coinbasewallet: {
-      package: CoinbaseWalletSDK, // Required
+      package: CoinbaseWalletSDK,
       options: {
-        appName: "NFKey", // Required
-        infuraId: process.env.REACT_APP_INFURA_ID, // Required
-        rpc: "", // Optional if `infuraId` is provided; otherwise it's required
-        chainId: 1, // Optional. It defaults to 1 if not provided
+        appName: "NFKey",
+        infuraId: process.env.REACT_APP_INFURA_ID,
       },
     },
     walletconnect: {
-      package: WalletConnectProvider, // required
+      package: WalletConnectProvider,
       options: {
-        infuraId: process.env.REACT_APP_INFURA_ID, // required
+        infuraId: process.env.REACT_APP_INFURA_ID,
       },
     },
   },
@@ -32,10 +30,6 @@ export async function connectWallet() {
   const instance = await web3Modal.connect()
   provider = new ethers.providers.Web3Provider(instance)
 }
-
-// export function getEthAccounts() {
-//   return provider.get
-// }
 
 export async function getSignatureAndAddress(message) {
   const signer = provider.getSigner()

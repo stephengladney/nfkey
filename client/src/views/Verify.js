@@ -60,20 +60,10 @@ const Button = styled.button`
 
 export function Verify({ link, setView }) {
   const [ethAccount, setEthAccount] = useState()
-  const [isWalletConnected, setIsWalletConnected] = useState(false)
   const [isAwaitingVerification, setIsAwaitingVerification] = useState(false)
   const [isFailedToVerify, setIsFailedToVerify] = useState(false)
 
-  const handleMetamask = async () => {
-    try {
-      await verifyWallet()
-      setIsWalletConnected(true)
-    } catch (e) {
-      console.log(e)
-    }
-  }
-
-  const verifyWallet = async () => {
+  const handleConnect = async () => {
     try {
       await wallet.connectWallet()
       const verifyParams = await wallet.getSignatureAndAddress(
@@ -88,10 +78,6 @@ export function Verify({ link, setView }) {
       setIsFailedToVerify(true)
     }
   }
-
-  // useEffect(() => {
-  //   if (isWalletConnected)
-  // }, [isWalletConnected])
 
   useEffect(() => {
     if (ethAccount) {
@@ -123,8 +109,7 @@ export function Verify({ link, setView }) {
           <Description>
             Please verify ownership of the required token(s).
           </Description>
-          {/* <SmallText>Choose your wallet...</SmallText> */}
-          <Button onClick={handleMetamask}>Verify Ownership</Button>
+          <Button onClick={handleConnect}>Verify Ownership</Button>
         </Fragment>
       )}
     </Container>
