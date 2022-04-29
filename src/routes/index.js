@@ -13,9 +13,6 @@ router.get("/googleaf69fafbcd3f09b4.html", (req, res) => {
 })
 
 router.get("*", (req, res) => {
-  console.log(`req protocol: ${req.protocol}`)
-  res.redirect(`https://${req.headers.host}/${req.url}`)
-
   res.sendFile(path.resolve("client", "build", "index.html"))
 })
 
