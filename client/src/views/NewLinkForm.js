@@ -25,7 +25,7 @@ import { REGEX, URL_FEEDBACK, VIEWS } from "./const"
 import { Footer } from "../components/Footer"
 
 export function NewLinkForm({ fade, setFade, setNewLink, setView }) {
-  const { host, pathname } = window.document.location
+  const { pathname } = window.document.location
   const [destinationUrl, setDestinationUrl] = useState("")
   const [urlPath, setUrlPath] = useState(
     pathname !== "/" ? String(pathname).substring(1) : generateId(6)
@@ -51,12 +51,18 @@ export function NewLinkForm({ fade, setFade, setNewLink, setView }) {
     setUrlPath(generateId(6))
   }
 
+  const convertUrlToHttps = (url) => {
+    return String(url).toLowerCase().substring(0, 5) !== "https"
+      ? `https:${String(url).substring(5)}`
+      : url
+  }
+
   const handleCreateClick = () => {
     createLink({
       host: "nfkey.to",
       pathname: urlPath,
       requirement_smart_contract: smartContractAddress,
-      destination_url: destinationUrl,
+      destination_url: convertUrlToHttps(destinationUrl),
     })
       .then((_) => {
         setNewLink({ host: "nfkey.to", pathname: urlPath })

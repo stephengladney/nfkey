@@ -22,6 +22,6 @@ export const URL_FEEDBACK = {
 export const REGEX = {
   URL_PATH: /^[a-zA-Z0-9-_]*$/,
   DESTINATION_URL:
-    /(https:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,18}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/,
+    /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,18}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/,
   SMART_CONTRACT: /^0x[a-fA-F0-9]{40}$/,
 }
