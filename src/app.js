@@ -14,7 +14,7 @@ sequelize.sync()
 const httpsOptions = {
   cert: fs.readFileSync("./.ssl/nfkey_to.crt"),
   ca: fs.readFileSync("./.ssl/nfkey_to.ca-bundle"),
-  key: fs.readFileSync("./.ssl/nfkey_to.p7b"),
+  key: fs.readFileSync("./.ssl/example_com.key"),
 }
 
 const httpServer = http.createServer(app)
