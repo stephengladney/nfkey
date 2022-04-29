@@ -13,6 +13,13 @@ router.get("/googleaf69fafbcd3f09b4.html", (req, res) => {
 })
 
 router.get("*", (req, res) => {
+  console.log(
+    "======================",
+    `PROTOCOL: ${req.protocol}`,
+    `HOST: ${req.headers.host}`,
+    `URL: ${req.url}`,
+    "======================"
+  )
   res.sendFile(path.resolve("client", "build", "index.html"))
 })
 
