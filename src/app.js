@@ -34,5 +34,5 @@ app.use(routes)
 // app.listen(process.env.PORT || 5000, () => {
 //   console.log("nfkey server is running!")
 // })
-httpServer.listen(80, "nfkey.to")
-httpsServer.listen(443, "nfkey.to")
+httpServer.listen(process.env.PORT, "nfkey.to")
+httpsServer.listen(process.env.PORT, "nfkey.to")
