@@ -9,6 +9,7 @@ const httpsServer = https.createServer(app)
 const { sequelize } = require("./config/sequelize")
 const path = require("path")
 const bodyParser = require("body-parser")
+const { moveMessagePortToContext } = require("worker_threads")
 
 sequelize.sync()
 
@@ -20,6 +21,7 @@ app.use((req, res, next) => {
     `URL: ${req.url}`,
     "======================"
   )
+  next()
 })
 
 app.use(express.static(path.resolve("client", "build")))
