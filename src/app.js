@@ -12,9 +12,9 @@ const bodyParser = require("body-parser")
 sequelize.sync()
 
 const httpsOptions = {
-  cert: fs.readFileSync("../.ssl/nfkey_to.crt"),
-  ca: fs.readFileSync("../.ssl/nfkey_to.ca-bundle"),
-  key: fs.readFileSync("../.ssl/nfkey_to.p7b"),
+  cert: fs.readFileSync("./.ssl/nfkey_to.crt"),
+  ca: fs.readFileSync("./.ssl/nfkey_to.ca-bundle"),
+  key: fs.readFileSync("./.ssl/nfkey_to.p7b"),
 }
 
 const httpServer = http.createServer(app)
