@@ -52,9 +52,11 @@ export function NewLinkForm({ fade, setFade, setNewLink, setView }) {
   }
 
   const convertUrlToHttps = (url) => {
-    return String(url).toLowerCase().substring(0, 5) !== "https"
-      ? `https:${String(url).substring(5)}`
-      : url
+    if (String(url).toLowerCase().substring(0, 7) === "http://") {
+      return `https://${String(url).substring(7)}`
+    } else if (String(url).toLowerCase().substring(0, 8) !== "https://") {
+      return `https://${String(url)}`
+    } else return url
   }
 
   const handleCreateClick = () => {

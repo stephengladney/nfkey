@@ -58,10 +58,24 @@ const Button = styled.button`
   padding: 15px;
 `
 
+function isFirstLetterVowel(word) {
+  const firstLetter = String(word).substring(0, 1).toLowerCase()
+  if (
+    firstLetter === "a" ||
+    firstLetter === "e" ||
+    firstLetter === "i" ||
+    firstLetter === "o" ||
+    firstLetter === "u"
+  )
+    return true
+  else return false
+}
+
 export function Verify({ link, setView }) {
   const [ethAccount, setEthAccount] = useState()
   const [isAwaitingVerification, setIsAwaitingVerification] = useState(false)
   const [isFailedToVerify, setIsFailedToVerify] = useState(false)
+  const [contractName, setContractName] = useState()
 
   const handleConnect = async () => {
     try {
@@ -94,6 +108,12 @@ export function Verify({ link, setView }) {
     }
   }, [ethAccount])
 
+  useEffect(() => {
+    wallet
+      .getSmartContractName(link.requirement_smart_contract)
+      .then((name) => setContractName(name))
+  }, [link])
+
   return (
     <Container>
       <Title>
@@ -104,7 +124,9 @@ export function Verify({ link, setView }) {
       {!isFailedToVerify && !isAwaitingVerification && (
         <Fragment>
           <Description>
-            This content requires ownership of a specific ERC-721 token.
+            This content requires ownership of{" "}
+            {contractName && isFirstLetterVowel(contractName) ? "an " : "a "}
+            {contractName ? contractName : "specific ERC-721"} token.
           </Description>
           <Description>
             Please verify ownership of the required token(s).
