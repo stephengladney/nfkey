@@ -75,7 +75,7 @@ export function Verify({ link, setView }) {
   const [ethAccount, setEthAccount] = useState()
   const [isAwaitingVerification, setIsAwaitingVerification] = useState(false)
   const [isFailedToVerify, setIsFailedToVerify] = useState(false)
-  const [contractName, setContractName] = useState()
+  const [contractNameAndSymbol, setContractNameAndSymbol] = useState({})
 
   const handleConnect = async () => {
     try {
@@ -109,10 +109,9 @@ export function Verify({ link, setView }) {
   }, [ethAccount])
 
   useEffect(() => {
-    alert(link.requirement_smart_contract)
     wallet
-      .getSmartContractName(link.requirement_smart_contract)
-      .then((name) => setContractName(name))
+      .getSmartContractNameAndSymbol(link.requirement_smart_contract)
+      .then((nameAndSymbol) => setContractNameAndSymbol(nameAndSymbol))
   }, [link])
 
   return (
@@ -126,8 +125,13 @@ export function Verify({ link, setView }) {
         <Fragment>
           <Description>
             This content requires ownership of{" "}
-            {contractName && isFirstLetterVowel(contractName) ? "an " : "a "}
-            {contractName ? contractName : "specific ERC-721"} token.
+            {contractNameAndSymbol && isFirstLetterVowel(contractNameAndSymbol)
+              ? "an "
+              : "a "}
+            {contractNameAndSymbol
+              ? `${contractNameAndSymbol.name} (${contractNameAndSymbol.symbol})`
+              : "specific ERC-721"}{" "}
+            token.
           </Description>
           <Description>
             Please verify ownership of the required token(s).

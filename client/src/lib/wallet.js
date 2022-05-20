@@ -49,11 +49,12 @@ export function verifySignature({ address, message, signature }) {
   return address === resolvedAddress
 }
 
-export async function getSmartContractName(contractAddress) {
+export async function getSmartContractNameAndSymbol(contractAddress) {
   const _provider = new ethers.providers.JsonRpcProvider(
     `https://mainnet.infura.io/v3/${process.env.REACT_APP_INFURA_ID}`
   )
   const contract = new ethers.Contract(contractAddress, ERC20_ABI, _provider)
   const name = await contract.name()
-  return name
+  const symbol = await contract.symbol()
+  return { name, symbol }
 }
