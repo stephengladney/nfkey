@@ -109,6 +109,7 @@ export function Verify({ link, setView }) {
   }, [ethAccount])
 
   useEffect(() => {
+    alert(link.requirement_smart_contract)
     wallet
       .getSmartContractName(link.requirement_smart_contract)
       .then((name) => setContractName(name))
