@@ -75,7 +75,7 @@ export function Verify({ link, setView }) {
   const [ethAccount, setEthAccount] = useState()
   const [isAwaitingVerification, setIsAwaitingVerification] = useState(false)
   const [isFailedToVerify, setIsFailedToVerify] = useState(false)
-  const [contractNameAndSymbol, setContractNameAndSymbol] = useState({})
+  const [contractNameAndSymbol, setContractNameAndSymbol] = useState()
 
   const handleConnect = async () => {
     try {
@@ -109,9 +109,11 @@ export function Verify({ link, setView }) {
   }, [ethAccount])
 
   useEffect(() => {
-    wallet
-      .getSmartContractNameAndSymbol(link.requirement_smart_contract)
-      .then((nameAndSymbol) => setContractNameAndSymbol(nameAndSymbol))
+    if (link) {
+      wallet
+        .getSmartContractNameAndSymbol(link.requirement_smart_contract)
+        .then((nameAndSymbol) => setContractNameAndSymbol(nameAndSymbol))
+    }
   }, [link])
 
   return (
