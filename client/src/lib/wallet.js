@@ -5,6 +5,12 @@ import WalletConnectProvider from "@walletconnect/web3-provider"
 
 let provider
 
+const ERC20_ABI = [
+  "function name() view returns (string)",
+  "function symbol() view returns (string)",
+  "function balanceOf(address) view returns (uint)",
+]
+
 const web3Modal = new Web3Modal({
   network: "mainnet",
   cacheProvider: false,
@@ -41,4 +47,13 @@ export async function getSignatureAndAddress(message) {
 export function verifySignature({ address, message, signature }) {
   const resolvedAddress = ethers.utils.verifyMessage(message, signature)
   return address === resolvedAddress
+}
+
+export async function getSmartContractName(contractAddress) {
+  const _provider = new ethers.providers.JsonRpcProvider(
+    `https://mainnet.infura.io/v3/${process.env.REACT_APP_INFURA_ID}`
+  )
+  const contract = new ethers.Contract(contractAddress, ERC20_ABI, _provider)
+  const name = await contract.name()
+  return name
 }
